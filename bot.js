@@ -141,7 +141,17 @@ for (const account of accounts) {
         }
       }
     });
-
+    
+   bot.on('messagestr', async (message) => {
+        if (message.includes(`bot`)) {
+          console.log("Someone Has Called You Out For Botting So You Were Sent To Limbo");
+          for (let i = 0; i < 100; i++) {
+            sleep(2)
+            bot.chat("/");
+          }
+        }
+    });
+    
     rl.on('line', (input) => {
       if (input === 'play') {
         if (!messageLogged) {
