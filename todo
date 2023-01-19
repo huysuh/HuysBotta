@@ -1,2 +1,5 @@
+todo list
+
 add a 'armor' command that toggles bots taking off their armor or not
 add a 'drop' command to make bots drop everything in their inventory
+auto leave when more than threshold joins the lobby?
