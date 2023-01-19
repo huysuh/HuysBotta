@@ -179,12 +179,14 @@ for (const account of accounts) {
       if (input === 'limbo') {
         if (!messageLogged) {
           messageLogged = true;
+          bot.chat("/l");
           console.log("[HuysBotta] Limboing...");
         }
-        for (let i = 0; i < 100; i++) {
-          sleep(100)
-          bot.chat("/");
-      }
+        for (let i = 0; i < 50; i++) {
+          setTimeout(() => {
+            bot.chat("/");
+          }, 100);
+        }
       }
     });
 
