@@ -5,8 +5,7 @@ hard bots:
   add a 'drop' command to make bots drop everything in their inventory
   auto leave when more than threshold joins the lobby?
 
-silent bots:
+silent bots/autogrinder:
   look at players and attack
-  swap lobby until found player
-  
-  
+  swap lobby until found player (if enabled otherwise just join party)
+  auto perk/prestige
