@@ -204,13 +204,13 @@ for (const account of accounts) {
     
     rl.on('line', (input) => {
       if (input === 'report') {
-        if (!messageLogged) {
-          messageLogged = true;
-          console.log(bot.username + " Reported " + reportign)
-        }
-        bot.chat("/wdr ${reportign} killaura");
+        const wordsList = ["bhop","killaura","reach","autoblock","speed"];
+        const randreport = wordsList[Math.floor(Math.random() * wordsList.length)];
+        bot.chat("/wdr ${reportign} ${randreport}");
+        console.log(bot.username + " Reported " + reportign + " For " + randreport)
        }
     });
+
 
     rl.on('line', (input) => {
       if (input === 'limbo') {
