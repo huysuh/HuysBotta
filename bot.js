@@ -104,13 +104,6 @@ for (const account of accounts) {
     //console input for joining, leaving, limboing, and start/stopping/termination of the script
 
     rl.on('line', (input) => {
-      if (input === 'report') {
-        console.log(bot.username + " Reported " + reportign)
-        bot.chat("/wdr ${reportign} killaura");
-       }
-    });
-
-    rl.on('line', (input) => {
       if (input === 'find') {
         if (!messageLogged) {
           if (bot.username === lobbyFinderIgn) {
