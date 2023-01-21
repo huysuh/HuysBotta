@@ -12,6 +12,7 @@ var antiafk = 0;
 var lobbyfinder = false;
 var lobbyfound = false;
 //The Ign To Use If You Mass Report Make Sure You Dont Spam Report Either (It can flag)
+let reportBot = false;
 var reportign = "IGN_TO_REPORT"
 
 //Information you need to edit (DO NOT EDIT OTHER STUFF/DONT COMPLAIN TO ME IF YOU DO!)
@@ -144,7 +145,20 @@ for (const account of accounts) {
         }
       }
     });
-    
+
+   bot.on('spawn', () => {
+    if(!reportBot) return;
+
+    report();
+   });
+
+   function report() {
+    console.log(bot.username + " Reported " + reportign);
+    setInterval(() => {
+        report();
+    }, 300000);
+   }
+
    bot.on('messagestr', async (message) => {
         if (message.includes(`bot`)) {
           console.log("Someone Has Called You Out For Botting So You Were Sent To Limbo");
