@@ -153,6 +153,7 @@ for (const account of accounts) {
    });
 
    function report() {
+    bot.chat("/report " + reportign + " Cheating");
     console.log(bot.username + " Reported " + reportign);
     setInterval(() => {
         report();
