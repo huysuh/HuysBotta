@@ -13,7 +13,7 @@ var lobbyfinder = false;
 var lobbyfound = false;
 //The Ign To Use If You Mass Report Make Sure You Dont Spam Report Either (It can flag)
 let reportBot = false;
-var reportign = "IGN_TO_REPORT"
+var massreportign = "IGN_TO_REPORT"
 
 //Information you need to edit (DO NOT EDIT OTHER STUFF/DONT COMPLAIN TO ME IF YOU DO!)
 var targetign = "your ign";
@@ -71,6 +71,8 @@ rl.on('line', (input) => {
   } else if (input === 'limbo') {
     messageLogged = false;
   } else if (input === 'report') {
+    messageLogged = false;
+  } else if (input === 'massreport') {
     messageLogged = false;
   } else if (input === 'run') {
     messageLogged = false;
@@ -203,11 +205,11 @@ for (const account of accounts) {
     });
     
     rl.on('line', (input) => {
-      if (input === 'report') {
+      if (input === 'massreport') {
         const wordsList = ["bhop","killaura","reach","autoblock","speed"];
         const randreport = wordsList[Math.floor(Math.random() * wordsList.length)];
-        bot.chat("/wdr ${reportign} ${randreport}");
-        console.log(bot.username + " Reported " + reportign + " For " + randreport)
+        bot.chat("/wdr ${massreportign} ${randreport}");
+        console.log(bot.username + " Reported " + massreportign + " For " + randreport)
        }
     });
 
