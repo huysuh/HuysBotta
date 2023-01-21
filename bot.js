@@ -81,10 +81,11 @@ rl.on('line', (input) => {
   }
 });
 
+//settimeout function here was changed to async and await added to each sleep
 const bots = [];
 for (const account of accounts) {
-  setTimeout(() => {
-    sleep(3000)
+  setTimeout( async () => {
+    await sleep(3000)
     const bot = mineflayer.createBot({
       host: 'hypixel.net',
       port: 25565,
@@ -99,7 +100,7 @@ for (const account of accounts) {
     bot.on('login', () => {
       console.log(bot.username + ' Connected');
     });
-    sleep(3000) 
+    await sleep(3000) 
 
     //console input for joining, leaving, limboing, and start/stopping/termination of the script
 
@@ -159,7 +160,7 @@ for (const account of accounts) {
         if (message.includes(`bot`)) {
           console.log("Someone Has Called You Out For Botting So You Were Sent To Limbo");
           for (let i = 0; i < 100; i++) {
-            sleep(2)
+            await sleep(2)
             bot.chat("/");
           }
         }
