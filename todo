@@ -1,8 +1,8 @@
 todo list
 
 hard bots:
-  add a 'armor' command that toggles bots taking off their armor or not
-  add a 'drop' command to make bots drop everything in their inventory
+  add a 'armor' command that toggles bots taking off their armor or not (kinda impossible bcz crash inventory interact)
+  add a 'drop' command to make bots drop everything in their inventory (kinda impossible bcz crash inventory interact)
   auto leave when more than threshold joins the lobby?
 
 silent bots/autogrinder:
