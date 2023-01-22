@@ -199,7 +199,7 @@ for (const account of accounts) {
     });
     
     rl.on('line', (input) => {
-      if (input === 'massreport') {
+      if (input === 'report') {
         const wordsList = ["bhop","killaura","reach","autoblock","speed"];
         const randreport = wordsList[Math.floor(Math.random() * wordsList.length)];
         bot.chat("/wdr ${massreportign} ${randreport}");
