@@ -136,7 +136,7 @@ for (const account of accounts) {
                 lobbyfound = true
               } else {
                 bot.chat("/play pit")
-                console.log("[HuysBotta] /play pit")
+                console.log('[HuysBotta] /play pit (' + lobbyplayercout + ' players)')
               }
             }, 2500);
           }
