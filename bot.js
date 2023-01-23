@@ -1,3 +1,4 @@
+var lobbycount = 10;
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 const mineflayer = require('mineflayer')
 const Vec3 = require('vec3')
@@ -15,11 +16,12 @@ var i_hate_niggas = false;
 let reportBot = false;
 
 //Information you need to edit (DO NOT EDIT OTHER STUFF/DONT COMPLAIN TO ME IF YOU DO!)
-var targetign = "MetalKazzFish";
+var targetign = "Your IGN";
 var anticallout = false; // enable or disable anti callout (when someone says "bot" it disables the leaves the lobby)
+var DeadLobbyPlayerCount = 8; // recommended to be a little high because there could be hypixel bots/npcs in tab that make the bots confused (default 8)
 
 //for the lobby finder ign
-var lobbyFinderIgn = "muckmunchman"
+var lobbyFinderIgn = "Bot that you /p transfer to to start finding a lobby's IGN"
 
 console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 console.log("")
@@ -107,42 +109,43 @@ for (const account of accounts) {
     //console input for joining, leaving, limboing, and start/stopping/termination of the script
 
     rl.on('line', (input) => {
-      if (input === 'find') {
-        if (!messageLogged) {
-          if (bot.username === lobbyFinderIgn) {
-            bot.chat("/lobby")
-            console.log("[HuysBotta] /l")
-          }
-          messageLogged = true;
-          if (!lobbyfinder) {
-            console.log("[HuysBotta] Finding a dead lobby. Lobby Finder enabled")
-            lobbyfinder = true;
-          } else {
-            console.log("[HuysBotta] Nvm. Lobby Finder disabled")
-            lobbyfinder = false;
-          }
-        }
+      if (input === 'findstop') {
+        lobbyfinder = false;
       }
     });
 
-    bot.on('physicTick', () => {
-      if (lobbyfinder) {
+    rl.on('line', (input) => {
+      if (input === 'findstart') {
         if (bot.username === lobbyFinderIgn) {
-          while (!lobbyfound) {
-            setTimeout(() => {
-              lobbyplayercount = bot.players.length;
-              if (lobbyplayercount < 5) {
-                console.log('[HuysBotta] Dead lobby found with ' + lobbyplayercount + ' players')
-                lobbyfound = true
-              } else {
-                bot.chat("/play pit")
-                console.log('[HuysBotta] /play pit (' + lobbyplayercout + ' players)')
-              }
-            }, 2500);
-          }
+          bot.chat("/lobby");
+          console.log("[HuysBotta] /l");
         }
+        lobbyfinder = true;
+        console.log("[HuysBotta] debug > lobbyfinder enabled")
       }
     });
+
+    let ticks = 0;
+    bot.on('physicTick', () => {
+          ticks++;
+          if (ticks >= 40) {
+            if (lobbyfinder) {
+            lobbycount = Object.keys(bot.players).length
+            if (bot.username === lobbyFinderIgn) {
+              if (lobbycount <= DeadLobbyPlayerCount) {
+                console.log('[HuysBotta] Dead lobby found with ' + lobbycount + ' players')
+                bot.chat("/p transfer ${targetign}")
+                lobbyfound = true
+                lobbyfinder = false;
+              } else {
+                bot.chat("/play pit")
+                console.log('[HuysBotta] /play pit (' + lobbycount + ' players)')
+              }
+            }
+          }
+            ticks = 0;
+          }
+        });
 
    bot.on('spawn', () => {
     if(!reportBot) return;
