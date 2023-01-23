@@ -11,15 +11,15 @@ let enabled = false;
 var antiafk = 0;
 var lobbyfinder = false;
 var lobbyfound = false;
-//The Ign To Use If You Mass Report Make Sure You Dont Spam Report Either (It can flag)
+var i_hate_niggas = false;
 let reportBot = false;
-var massreportign = "IGN_TO_REPORT"
 
 //Information you need to edit (DO NOT EDIT OTHER STUFF/DONT COMPLAIN TO ME IF YOU DO!)
-var targetign = "your ign";
+var targetign = "MetalKazzFish";
+var anticallout = false; // enable or disable anti callout (when someone says "bot" it disables the leaves the lobby)
 
 //for the lobby finder ign
-var lobbyFinderIgn = "ign of bot you'll p transfer to"
+var lobbyFinderIgn = "muckmunchman"
 
 console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 console.log("")
@@ -32,9 +32,9 @@ console.log(" |_|  |_|\\__,_|\\__, |___/____/ \\___/ \\__|")
 console.log("                __/ |                    ")
 console.log("")
 console.log("")
-console.log("Huys Pit Bots v1.0.0 -- highest quality token logger")
+console.log("Huys Pit Bots v1.0.5 -- highest quality token logger")
 console.log("")
-console.log("Features - ")
+console.log("Features - hard bot, limbo command, dead lobby finder, proxy support, anti callout, mass report")
 console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 
 const accounts = [
@@ -43,6 +43,7 @@ const accounts = [
   {username: 'AccountEmail', password: 'AccountPassword', proxy: 'socks5://ProxyUsername:ProxyPassword@ProxyHost:ProxyPort'}, 
   {username: 'AccountEmail', password: 'AccountPassword', proxy: 'socks5://ProxyUsername:ProxyPassword@ProxyHost:ProxyPort'}, 
 ];
+
 
 
 const sleep = (milliseconds) => {
@@ -78,6 +79,8 @@ rl.on('line', (input) => {
     messageLogged = false;
   } else if (input === 'find') {
     messageLogged = false;
+  } else if (input === 'cum') {
+    messageLogged = false;
   }
 });
 
@@ -100,7 +103,6 @@ for (const account of accounts) {
     bot.on('login', () => {
       console.log(bot.username + ' Connected');
     });
-    await sleep(3000) 
 
     //console input for joining, leaving, limboing, and start/stopping/termination of the script
 
@@ -157,6 +159,7 @@ for (const account of accounts) {
    }
 
    bot.on('messagestr', async (message) => {
+      if (anticallout) {
         if (message.includes(`bot`)) {
           console.log("Someone Has Called You Out For Botting So You Were Sent To Limbo");
           for (let i = 0; i < 100; i++) {
@@ -164,6 +167,18 @@ for (const account of accounts) {
             bot.chat("/");
           }
         }
+      }
+    });
+
+    rl.on('line', (input) => {
+      if (input === 'lobby') {
+        if (!messageLogged) {
+          messageLogged = true;
+          console.log("[HuysBotta] Making bots go to the lobby")
+        }
+        bot.chat("/lobby");
+        enabled = false;
+      }
     });
     
     rl.on('line', (input) => {
@@ -173,6 +188,16 @@ for (const account of accounts) {
           console.log("[HuysBotta] Making bots go to the Pit")
         }
         bot.chat("/play pit");
+      }
+    });
+
+    rl.on('line', (input) => {
+      if (input === 'cum') {
+        if (!messageLogged) {
+          messageLogged = true;
+          console.log("[HuysBotta] AutoBitches disabled.")
+        }
+        bot.chat("/pc Thats Good!!!!!");
       }
     });
 
@@ -197,15 +222,6 @@ for (const account of accounts) {
         }
       }
     });
-    
-    rl.on('line', (input) => {
-      if (input === 'report') {
-        const wordsList = ["bhop","killaura","reach","autoblock","speed"];
-        const randreport = wordsList[Math.floor(Math.random() * wordsList.length)];
-        bot.chat("/wdr ${massreportign} ${randreport}");
-        console.log(bot.username + " Reported " + massreportign + " For " + randreport)
-       }
-    });
 
 
     rl.on('line', (input) => {
@@ -220,6 +236,17 @@ for (const account of accounts) {
             bot.chat("/");
           }, 100);
         }
+      }
+    });
+
+    rl.on('line', input => {
+      const [command, ...args] = input.split(' ');
+      if (command === 'report') {
+        i_hate_niggas = args.join('');
+        const wordsList = ["bhop","killaura","reach","autoblock","speed"];
+        const randreport = wordsList[Math.floor(Math.random() * wordsList.length)];
+        bot.chat("/wdr ${i_hate_niggas} ${randreport}");
+        console.log(bot.username + " Reported " + i_hate_niggas + " For " + randreport)
       }
     });
 
