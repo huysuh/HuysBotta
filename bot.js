@@ -85,7 +85,7 @@ rl.on('line', (input) => {
     messageLogged = false;
   } else if (input === 'report') {
     messageLogged = false;
-  } else if (input === 'massreport') {
+  } else if (input === 'kosreport') {
     messageLogged = false;
   } else if (input === 'run') {
     messageLogged = false;
@@ -266,6 +266,19 @@ for (const account of accounts) {
         const randreport = wordsList[Math.floor(Math.random() * wordsList.length)];
         bot.chat("/wdr ${i_hate_niggas} ${randreport}");
         console.log(bot.username + " Reported " + i_hate_niggas + " For " + randreport)
+      }
+    });
+    
+    rl.on('line', input => {
+      const [command, ...args] = input.split(' ');
+      if (command === 'kosreport') {
+        i_hate_niggas = args.join('');
+        let names = ["Niquit", "AmoebaFan", "BillySet", "Manesh", "Zoreveth", "Axsolo", "ttfan", "Naturalss", "Artificialsss", "pitballer3000", "Axduo", "Quent_007", "GEORGEWEAH", "SmurfPve"];
+        let randomName = names[Math.floor(Math.random() * names.length)];
+        const wordsList = ["bhop","killaura","reach","autoblock","speed"];
+        const randreport = wordsList[Math.floor(Math.random() * wordsList.length)];
+        bot.chat("/wdr ${randomName} ${randreport}");
+        console.log(bot.username + " Reported " + randomName + " For " + randreport)
       }
     });
 
