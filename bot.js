@@ -21,6 +21,7 @@ let reportBot = false;
 var arglol;
 var silentbot;
 var hardbot;
+var strafe = 0;
 
 //Information you need to edit (DO NOT EDIT OTHER STUFF/DONT COMPLAIN TO ME IF YOU DO!)
 var targetign = "Your IGN";
@@ -42,13 +43,10 @@ console.log(" |_|  |_|\\__,_|\\__, |___/____/ \\___/ \\__|")
 console.log("                __/ |                    ")
 console.log("")
 console.log("")
-console.log("Huys Pit Bots v1.0.6")
+console.log("Huys Pit Bots v1.0.7")
 console.log("")
 console.log("Changelog:")
-console.log("[+] Silent Bots")
-console.log("[+] Bot command 'bot <silent/hard>'")
-console.log("[-] Removed unused report function")
-console.log("")
+console.log("[+] Added strafing with silent bots ")
 console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 
 const accounts = [
@@ -93,7 +91,7 @@ rl.on('line', (input) => {
     messageLogged = false;
   } else if (input === 'find') {
     messageLogged = false;
-  } else if (input === 'cum') {
+  } else if (input === 'wow') {
     messageLogged = false;
   } else if (input === 'bot') {
     messageLogged = false;
@@ -217,11 +215,7 @@ for (const account of accounts) {
     });
 
     rl.on('line', (input) => {
-      if (input === 'cum') {
-        if (!messageLogged) {
-          messageLogged = true;
-          console.log("[HuysBotta] AutoBitches disabled.")
-        }
+      if (input === 'wow') {
         bot.chat("/pc Thats Good!!!!!");
       }
     });
@@ -368,17 +362,27 @@ for (const account of accounts) {
 
     //bot pathing to coordinates
     bot.on('physicTick', () => {
-      boty = (bot.entity.position.y)
       if(enabled)  {
+        boty = (bot.entity.position.y)
         if (bot.getControlState('forward') == false) bot.setControlState('forward', true);
         if (bot.getControlState('sprint') == false) bot.setControlState('sprint', true);
         if (hardbot) {
           //hard bots
           bot.lookAt(new Vec3(0, boty, 0))
         } if (silentbot) {
+          strafe++;
           silentticks++;
           //silent bots
           if (bot.entity.position.y < spawnY) {
+            if (strafe < 40) {
+              if (bot.getControlState('left') == false) bot.setControlState('left', true);
+              if (bot.getControlState('right') == true) bot.setControlState('right', false);
+            } else if (strafe < 80) {
+              if (bot.getControlState('left') == true) bot.setControlState('left', false);
+              if (bot.getControlState('right') == false) bot.setControlState('right', true);
+            } else {
+              strafe = 0;
+            }
             if (bot.nearestEntity(({ type }) => type === 'player')) {
               var { username } = bot.nearestEntity(({ type }) => type === 'player')
               coords = bot.players[username].entity.position
