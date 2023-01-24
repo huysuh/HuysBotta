@@ -1,3 +1,4 @@
+let nearestPlayer;
 var lobbycount = 10;
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 const mineflayer = require('mineflayer')
@@ -5,6 +6,9 @@ const Vec3 = require('vec3')
 const ProxyAgent = require('proxy-agent')
 const socks = require('socks').SocksClient
 const readline = require('readline');
+var FreeMoneyHubISPoorFuckYouHuysOnTop = 0;
+var spawnY;
+var silentticks = 0;
 var ticks = 0;
 var inMid = false;
 var inSpawn = true;
@@ -14,11 +18,15 @@ var lobbyfinder = false;
 var lobbyfound = false;
 var i_hate_niggas = false;
 let reportBot = false;
+var arglol;
+var silentbot;
+var hardbot;
 
 //Information you need to edit (DO NOT EDIT OTHER STUFF/DONT COMPLAIN TO ME IF YOU DO!)
 var targetign = "Your IGN";
 var anticallout = false; // enable or disable anti callout (when someone says "bot" it disables the leaves the lobby)
 var DeadLobbyPlayerCount = 8; // recommended to be a little high because there could be hypixel bots/npcs in tab that make the bots confused (default 8)
+let nearestDistance = 10; // Player distance for silent bots
 
 //for the lobby finder ign
 var lobbyFinderIgn = "Bot that you /p transfer to to start finding a lobby's IGN"
@@ -34,9 +42,13 @@ console.log(" |_|  |_|\\__,_|\\__, |___/____/ \\___/ \\__|")
 console.log("                __/ |                    ")
 console.log("")
 console.log("")
-console.log("Huys Pit Bots v1.0.5 -- highest quality token logger")
+console.log("Huys Pit Bots v1.0.6")
 console.log("")
-console.log("Features - hard bot, limbo command, dead lobby finder, proxy support, anti callout, mass report")
+console.log("Changelog:")
+console.log("[+] Silent Bots")
+console.log("[+] Bot command 'bot <silent/hard>'")
+console.log("[-] Removed unused report function")
+console.log("")
 console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 
 const accounts = [
@@ -83,6 +95,8 @@ rl.on('line', (input) => {
     messageLogged = false;
   } else if (input === 'cum') {
     messageLogged = false;
+  } else if (input === 'bot') {
+    messageLogged = false;
   }
 });
 
@@ -106,7 +120,29 @@ for (const account of accounts) {
       console.log(bot.username + ' Connected');
     });
 
-    //console input for joining, leaving, limboing, and start/stopping/termination of the script
+    // code start
+
+    rl.on('line', input => {
+      const [command, ...args] = input.split(' ');
+      if (command === 'bot') {
+        if (!messageLogged) {
+          arglol = args.join('');
+          if (arglol = "silent" | "soft" | "hard" | "blatant") {
+            if (arglol = "silent" | "soft") {
+              console.log("[HuysBotta] softbot mode");
+              hardbot = false;
+              silentbot = true;
+            } else if (arglol = "hard" | "blatant") {
+              console.log("[HuysBotta] hardbot mode");
+              hardbot = true;
+              silentbot = false;
+            }
+          } else {
+            console.log("[HuysBotta] Choose one! <silent/soft or hard/blatant>");
+          }
+        }
+      }
+    });
 
     rl.on('line', (input) => {
       if (input === 'findstop') {
@@ -146,20 +182,6 @@ for (const account of accounts) {
             ticks = 0;
           }
         });
-
-   bot.on('spawn', () => {
-    if(!reportBot) return;
-
-    report();
-   });
-
-   function report() {
-    bot.chat("/report " + reportign + " Cheating");
-    console.log(bot.username + " Reported " + reportign);
-    setInterval(() => {
-        report();
-    }, 300000);
-   }
 
    bot.on('messagestr', async (message) => {
       if (anticallout) {
@@ -285,6 +307,13 @@ for (const account of accounts) {
       }
     });
 
+    // silent bot code start
+
+    bot.on('spawn', () => {
+      spawnY = bot.entity.position.y - 5;
+      console.log("[HuysBotta] Spawn Y is " + spawnY);
+    });
+
     //party joining ty kymp
     bot.on('messagestr', async (message) => {
         if (message.includes(`${targetign} has invited you to join their party`)) {
@@ -292,13 +321,85 @@ for (const account of accounts) {
         }
     });
 
+    //code from kymp
+
+    bot.leftClick = () => { // Basic left clicking
+      bot.swingArm('left')
+      let entity = bot.entityAtCursor()
+      if (entity) {
+        bot.attack(entity, false)
+      }
+    }
+
+    bot.entityAtCursor = (maxDistance = 3.0) => {
+      const block = bot.blockAtCursor(maxDistance)
+      maxDistance = block?.intersect.distanceTo(bot.entity.position) ?? maxDistance
+    
+      const entities = Object.values(bot.entities)
+        .filter(entity => entity.type !== 'object' && entity.username !== bot.username && entity.position.distanceTo(bot.entity.position) <= maxDistance)
+    
+      const dir = new Vec3(-Math.sin(bot.entity.yaw) * Math.cos(bot.entity.pitch), Math.sin(bot.entity.pitch), -Math.cos(bot.entity.yaw) * Math.cos(bot.entity.pitch))
+      const iterator = new RaycastIterator(bot.entity.position.offset(0, bot.entity.height, 0), dir.normalize(), maxDistance)
+    
+      let targetEntity = null
+      let targetDist = maxDistance
+    
+      for (let i = 0; i < entities.length; i++) {
+        const entity = entities[i]
+        const w = entity.width / 2
+    
+        const shapes = [[-w, 0, -w, w, entity.height + (entity.type === 'player' ? 0.18 : 0), w]]
+        const intersect = iterator.intersect(shapes, entity.position)
+        if (intersect) {
+          const entityDir = entity.position.minus(bot.entity.position) // Can be combined into 1 line
+          const sign = Math.sign(entityDir.dot(dir))
+          if (sign !== -1) {
+            const dist = bot.entity.position.distanceTo(intersect.pos)
+            if (dist < targetDist) {
+              targetEntity = entity
+              targetDist = dist
+            }
+          }
+        }
+      }
+    
+      return targetEntity
+    }
+
     //bot pathing to coordinates
     bot.on('physicTick', () => {
+      boty = (bot.entity.position.y)
       if(enabled)  {
-        boty = (bot.entity.position.y)
-        bot.lookAt(new Vec3(0, boty, 0))
         if (bot.getControlState('forward') == false) bot.setControlState('forward', true);
         if (bot.getControlState('sprint') == false) bot.setControlState('sprint', true);
+        if (hardbot) {
+          //hard bots
+          bot.lookAt(new Vec3(0, boty, 0))
+        } if (silentbot) {
+          silentticks++;
+          //silent bots
+          if (bot.entity.position.y < spawnY) {
+            if (bot.nearestEntity(({ type }) => type === 'player')) {
+              var { username } = bot.nearestEntity(({ type }) => type === 'player')
+              coords = bot.players[username].entity.position
+              x = coords.x
+              y = coords.y
+              z = coords.z
+              x =x
+              y += 1.5
+              z =z
+              bot.lookAt(new Vec3(x, y, z))
+            }
+            if (bot.getControlState('jump') == false) bot.setControlState('jump', true);
+            FreeMoneyHubISPoorFuckYouHuysOnTop = (Math.floor(Math.random() * (5 - 3 + 1)) + 3)
+            if (silentticks > FreeMoneyHubISPoorFuckYouHuysOnTop) {
+              bot.leftClick()
+              silentticks = 0;
+            }
+          } else {
+            bot.lookAt(new Vec3(0, boty, 0))
+          }
+        }
       } else {
         if (bot.getControlState('forward') == true) bot.setControlState('forward', false);
         if (bot.getControlState('sprint') == true) bot.setControlState('sprint', false);
