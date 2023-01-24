@@ -1,8 +1,9 @@
 # HuysBotta
 HuysBotta is a Bot for the Hypixel Pit coded in Mineflayer.js! 
+Made By Huys & FreeMoneyHub
 
 Current Features:
-hard bot, limbo command, dead lobby finder, proxy support, anti callout, mass report
+hard bot, limbo command, dead lobby finder, proxy support, anti callout, mass report, kos report, silent bots
 
 
 No cheating or boosting on hypixel is condoned here!
