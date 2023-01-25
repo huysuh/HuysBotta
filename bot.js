@@ -12,12 +12,12 @@ var silentticks = 0;
 var ticks = 0;
 var inMid = false;
 var inSpawn = true;
-let enabled = false;
+var enabled = false;
 var antiafk = 0;
 var lobbyfinder = false;
 var lobbyfound = false;
 var i_hate_niggas = false;
-let reportBot = false;
+var reportBot = false;
 var arglol;
 var silentbot;
 var hardbot;
@@ -25,6 +25,7 @@ var strafe = 0;
 
 //Information you need to edit (DO NOT EDIT OTHER STUFF/DONT COMPLAIN TO ME IF YOU DO!)
 var targetign = "Your IGN";
+var findingTargetLobby = false; //for silent botting, they will try to find ur lobby instead of you having to party them risking a ban
 var anticallout = false; // enable or disable anti callout (when someone says "bot" it disables the leaves the lobby)
 var DeadLobbyPlayerCount = 8; // recommended to be a little high because there could be hypixel bots/npcs in tab that make the bots confused (default 8)
 let nearestDistance = 10; // Player distance for silent bots
@@ -95,6 +96,8 @@ rl.on('line', (input) => {
     messageLogged = false;
   } else if (input === 'bot') {
     messageLogged = false;
+  } else if (input === 'findlobby') {
+    messageLogged = false;
   }
 });
 
@@ -144,9 +147,36 @@ for (const account of accounts) {
 
     rl.on('line', (input) => {
       if (input === 'findstop') {
-        lobbyfinder = false;
+        if(!findingTargetLobby) {
+          console.log("Lobby finding task isn't running");
+          return;
+        }
+
+
+        findingTargetLobby = false;
+        console.log("Lobby finding task disabled");
       }
     });
+
+    rl.on('line', (input) => {
+      if (input === 'lobbyfind') {
+        if(findingTargetLobby) {
+          console.log("Lobby finding task is already running! Type 'lobbyfindstop' to stop the task!");
+          return;
+        }
+
+        findingTargetLobby = true;
+        console.log("Attempting to find " +  targetign + "'s lobby now!");
+        findTargetIgnLobby();
+      }
+    });
+
+    rl.on('line', (input) => {
+      if (input === 'lobbyfindstop') {
+        findingTargetLobby = true;
+      }
+    });
+
 
     rl.on('line', (input) => {
       if (input === 'findstart') {
@@ -158,6 +188,25 @@ for (const account of accounts) {
         console.log("[HuysBotta] debug > lobbyfinder enabled")
       }
     });
+
+    function findTargetIgnLobby() {
+     if(checkIfTargetIgnInLobby) {
+      console.log(bot.username + " is in " + targetign + "'s lobby!");
+     } else {
+      bot.chat("/play pit");
+      setInterval(() => {
+        findTargetIgnLobby();
+      }, 5000);
+     }
+    }
+
+    function checkIfTargetIgnInLobby() {
+      if(targetign in bot.players) {
+        return true;
+      } else {
+        return false;
+      }
+    }
 
     let ticks = 0;
     bot.on('physicTick', () => {
