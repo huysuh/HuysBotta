@@ -19,8 +19,9 @@ Made by huys (small changes from ilylol & freemoneyhub)
 promote the bot that you set as "lobbyFinderIgn" at the top of the script. once promoted make all bots go to limbo. once in limbo type findstart and it will begin finding a lobby. it will automatically disable when you find a lobby but in the event you want to stop it for any reason typing /findstop should work
 
 ### changelog:
+```diff
 +cleaned up code ty jd
 -removed unused silent bot code
-
+```
 ![image](https://user-images.githubusercontent.com/90770502/213885174-5d61f231-c810-4617-bcb2-a2094be83403.png)
 
