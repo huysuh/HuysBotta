@@ -29,10 +29,10 @@ console.log(" |_|  |_|\\__,_|\\__, |___/____/ \\___/ \\__|")
 console.log("                __/ |                    ")
 console.log("")
 console.log("")
-console.log("Huys Pit Bots v1.0.7")
+console.log("Huys Pit Bots v1.0.7 (discord.gg/huys)")
 console.log("")
 console.log("Changelog:")
-console.log("[+] Added strafing with silent bots ")
+console.log("[+] fixed/removed broken features")
 console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 
 const accounts = [
