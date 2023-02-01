@@ -1,6 +1,6 @@
 # HuysBotta
 HuysBotta is a Bot for the Hypixel Pit coded in Mineflayer.js! 
-Made By Huys (small changes from ilylol & freemoneyhub)
+Made by huys (small changes from ilylol & freemoneyhub)
 
 ### commands:
 >play - makes bot join pit
