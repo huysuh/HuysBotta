@@ -57,34 +57,10 @@ const rl = readline.createInterface({
 let messageLogged = false;
 
 rl.on('line', (input) => {
-  if (input === 'party') {
-    messageLogged = false;
-  } else if (input === 'lobby') {
-    messageLogged = false;
-  } else if (input === 'play') {
-    messageLogged = false;
-  } else if (input === 'start') {
-    messageLogged = false;
-  } else if (input === 'stop') {
-    messageLogged = false;
-  } else if (input === 'limbo') {
-    messageLogged = false;
-  } else if (input === 'report') {
-    messageLogged = false;
-  } else if (input === 'kosreport') {
-    messageLogged = false;
-  } else if (input === 'run') {
-    messageLogged = false;
-  } else if (input === 'find') {
-    messageLogged = false;
-  } else if (input === 'wow') {
-    messageLogged = false;
-  } else if (input === 'bot') {
-    messageLogged = false;
-  } else if (input === 'findlobby') {
+  if ((input === 'party') || (input === 'lobby') || (input === 'play') || (input === 'start') || (input === 'stop') || (input === 'limbo') || (input === 'report') || (input === 'kosreport') || (input === 'run') || (input === 'find') || (input === 'wow') || (input === 'bot') || (input === 'findlobby')){
     messageLogged = false;
   }
-});
+}); 
 
 //settimeout function here was changed to async and await added to each sleep
 const bots = [];
