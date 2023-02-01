@@ -2,7 +2,7 @@
 HuysBotta is a Bot for the Hypixel Pit coded in Mineflayer.js! 
 Made By Huys & FreeMoneyHub
 
-### commands are
+### commands:
 >play - makes bot join pit
 >lobby - makes bot go to the lobby
 >limbo - makes bots go to limbo (may have to be typed multiple times)
@@ -15,7 +15,7 @@ Made By Huys & FreeMoneyHub
 >massreport - configure igns in the config. reports a group of people you define
 
 
-### how to use lobbyfinder
+### how to use the small lobby finder:
 promote the bot that you set as "lobbyFinderIgn" at the top of the script. once promoted make all bots go to limbo. once in limbo type findstart and it will begin finding a lobby. it will automatically disable when you find a lobby but in the event you want to stop it for any reason typing /findstop should work
 
 ![image](https://user-images.githubusercontent.com/90770502/213885174-5d61f231-c810-4617-bcb2-a2094be83403.png)
