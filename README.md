@@ -23,5 +23,13 @@ promote the bot that you set as "lobbyFinderIgn" at the top of the script. once 
 +cleaned up code ty jd
 -removed unused silent bot code
 ```
+  
+###todo:
+  -[x] Hard bots
+  -[x] Clean up code
+  -[] Read alts from file
+  -[] Silent bots
+  -[] Run via discord
+  
 ![image](https://user-images.githubusercontent.com/90770502/213885174-5d61f231-c810-4617-bcb2-a2094be83403.png)
 
