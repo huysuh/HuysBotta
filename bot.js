@@ -110,14 +110,32 @@ for (const account of accounts) {
 
     rl.on('line', (input) => {
       if (input === 'findstop') {
-        if(!findingTargetLobby) {
-          console.log("Lobby finding task isn't running");
-          return;
+        if (bot.username === lobbyFinderIgn) {
+          console.log("[HuysBotta] debug > lobbyfinder disabled")
         }
+        lobbyfinder = false;
+      }
+    });
+    
+    rl.on('line', (input) => {
+      if (input === 'findstart') {
+        if (bot.username === lobbyFinderIgn) {
+          bot.chat("/lobby");
+          console.log("[HuysBotta] /l");
+          console.log("[HuysBotta] debug > lobbyfinder enabled")
+        }
+        lobbyfinder = true;
+      }
+    });
 
-
-        findingTargetLobby = false;
-        console.log("Lobby finding task disabled");
+    rl.on('line', (input) => {  
+      if (input === 'warp') {    
+        if (bot.username === warpName) {
+            console.log("[HuysBotta] Warping...")        
+            bot.chat("/play pit")      
+            setTimeout(() => {}, 1000);          
+            bot.chat(`/p transfer ${targetign}`)    
+        }  
       }
     });
 
@@ -140,17 +158,6 @@ for (const account of accounts) {
       }
     });
 
-
-    rl.on('line', (input) => {
-      if (input === 'findstart') {
-        if (bot.username === lobbyFinderIgn) {
-          bot.chat("/lobby");
-          console.log("[HuysBotta] /l");
-        }
-        lobbyfinder = true;
-        console.log("[HuysBotta] debug > lobbyfinder enabled")
-      }
-    });
 
     function findTargetIgnLobby() {
      if(checkIfTargetIgnInLobby) {
