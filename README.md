@@ -7,16 +7,16 @@ Made by huys (small changes from ilylol & freemoneyhub)
 ![GitHub top language](https://img.shields.io/github/languages/top/huysuh/HuysBotta?color=yellow) 
 
 ### commands:
->play - makes bot join pit
->lobby - makes bot go to the lobby
->limbo - makes bots go to limbo (may have to be typed multiple times)
->findstart - starts the lobby finder
->findstop - stops the lobby finder
->lobbyfind - doesn't work (for silent bots which aren't made yet)
->party - sends the /p commands you need to type to party your bots
->warp - if the lobbyFinderIgn is party leader. makes the lobbyFinderIgn /play pit
->report <ign> - reports who you selected
->massreport - configure igns in the config. reports a group of people you define
+>play - makes bot join pit. 
+>lobby - makes bot go to the lobby. 
+>limbo - makes bots go to limbo (may have to be typed multiple times). 
+>findstart - starts the lobby finder. 
+>findstop - stops the lobby finder. 
+>lobbyfind - doesn't work (for silent bots which aren't made yet). 
+>party - sends the /p commands you need to type to party your bots. 
+>warp - if the lobbyFinderIgn is party leader. makes the lobbyFinderIgn /play pit. 
+>report <ign> - reports who you selected. 
+>massreport - configure igns in the config. reports a group of people you define. 
 
 
 ### how to use the small lobby finder:
