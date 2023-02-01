@@ -25,7 +25,7 @@ promote the bot that you set as "lobbyFinderIgn" at the top of the script. once 
 ```
   
 ### todo:
-  -[x] Hard bots
+  - [x]  Hard bots
   -[x] Clean up code
   -[] Read alts from file
   -[] Silent bots
