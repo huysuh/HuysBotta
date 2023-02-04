@@ -1,22 +1,24 @@
-let nearestPlayer;
-var lobbycount = 10;
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 const mineflayer = require('mineflayer')
 const Vec3 = require('vec3')
 const ProxyAgent = require('proxy-agent')
 const socks = require('socks').SocksClient
 const readline = require('readline');
-var enabled = false;
+var ticks = 0;
+var inMid = false;
+var inSpawn = true;
+let enabled = false;
+var antiafk = 0;
+var lobbycount = 10;
 var lobbyfinder = false;
-var PitBoostONTOP_L_nick_LMFAO = false;
+var lobbyfound = false;
+var deadLobbyCheck = false;
 
-//Information you need to edit (DO NOT EDIT OTHER STUFF/DONT COMPLAIN TO ME IF YOU DO!)
-var targetign = "Your IGN";
-var findingTargetLobby = false; //for silent botting, they will try to find ur lobby instead of you having to party them risking a ban
-var anticallout = false; // enable or disable anti callout (when someone says "bot" it disables the leaves the lobby)
-var DeadLobbyPlayerCount = 8; // recommended to be a little high because there could be hypixel bots/npcs in tab that make the bots confused (default 8)
-//for the lobby finder ign
-var lobbyFinderIgn = "Bot that you /p transfer to to start finding a lobby's IGN"
+var targetign = "Name of player who parties the bots (Your IGN)";
+var reportign = ""
+var lobbyFinderIgn = "Name of bot that you /p transfer to to swap to find a dead lobby"
+var warpName = "Name of bot that you /p transfer to to warp the bots into the lobby (good for lobby filling useless otherwise)";
+var DeadLobbyPlayerCount = 5; //(default 8)
 
 console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 console.log("")
@@ -29,10 +31,9 @@ console.log(" |_|  |_|\\__,_|\\__, |___/____/ \\___/ \\__|")
 console.log("                __/ |                    ")
 console.log("")
 console.log("")
-console.log("Huys Pit Bots v1.0.7 (discord.gg/huys)")
+console.log("Huys Pit Bot Discord.gg/Huys")
 console.log("")
-console.log("Changelog:")
-console.log("[+] fixed/removed broken features")
+console.log("")
 console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 
 const accounts = [
@@ -41,7 +42,6 @@ const accounts = [
   {username: 'AccountEmail', password: 'AccountPassword', proxy: 'socks5://ProxyUsername:ProxyPassword@ProxyHost:ProxyPort'}, 
   {username: 'AccountEmail', password: 'AccountPassword', proxy: 'socks5://ProxyUsername:ProxyPassword@ProxyHost:ProxyPort'}, 
 ];
-
 
 
 const sleep = (milliseconds) => {
@@ -57,32 +57,68 @@ const rl = readline.createInterface({
 let messageLogged = false;
 
 rl.on('line', (input) => {
-  if ((input === 'party') || (input === 'lobby') || (input === 'play') || (input === 'start') || (input === 'stop') || (input === 'limbo') || (input === 'report') || (input === 'kosreport') || (input === 'run') || (input === 'find') || (input === 'wow') || (input === 'bot') || (input === 'findlobby')){
+  if (input === 'party') {
+    messageLogged = false;
+  } else if (input === 'lobby') {
+    messageLogged = false;
+  } else if (input === 'play') {
+    messageLogged = false;
+  } else if (input === 'start') {
+    messageLogged = false;
+  } else if (input === 'stop') {
+    messageLogged = false;
+  } else if (input === 'report') {
+    messageLogged = false;
+  } else if (input === 'limbo') {
+    messageLogged = false;
+  } else if (input === 'run') {
+    messageLogged = false;
+  } else if (input === 'logjoins') {
     messageLogged = false;
   }
-}); 
+});
 
-//settimeout function here was changed to async and await added to each sleep
 const bots = [];
-for (const account of accounts) {
-  setTimeout( async () => {
-    await sleep(3000)
-    const bot = mineflayer.createBot({
-      host: 'hypixel.net',
-      port: 25565,
-      version: "1.8.9",
-      username: account.username,
-      password: account.password,
-      auth: 'microsoft',
-      agent: new ProxyAgent(account.proxy),
-    });
+    for (const account of accounts) {
+      const randomDelay = Math.floor(Math.random() * (50 - 30 + 1)) + 30;
+      sleep(randomDelay)
+      setTimeout(() => {
+        const bot = mineflayer.createBot({
+          host: 'hypixel.net',
+          port: 25565,
+          version: "1.8.9",
+          username: account.username,
+          password: account.password,
+          auth: 'microsoft',
+          agent: new ProxyAgent(account.proxy),
+      }, randomDelay);
     bots.push(bot);
 
     bot.on('login', () => {
-      console.log(bot.username + ' Connected');
+      console.log(bot.username + ' Connected ' + randomDelay + 'ms');
+      sleep(3000)
     });
 
-    // code start
+    bot.on('entityHurt', (entity) => {
+     if (bot.entity.uuid === entity.uuid) {
+      bot.chat('/oof');
+       }
+    });
+
+    rl.on('line', (input) => {
+      if (input === 'logjoins') {
+        console.log(bot.username + ' Has Started Logging Joins');
+        bot.on('playerJoined', (player) => {
+          if (player.username.length === 10) {
+            setTimeout(() => {}, 100);
+         } else {
+          if ("Pit" in bot.scoreboards) {
+            bot.chat(`/pc ${player.username} joined`);
+          }
+        }
+      });
+     }
+    });
 
     rl.on('line', (input) => {
       if (input === 'findstop') {
@@ -114,91 +150,39 @@ for (const account of accounts) {
         }  
       }
     });
-
-    rl.on('line', (input) => {
-      if (input === 'lobbyfind') {
-        if(findingTargetLobby) {
-          console.log("Lobby finding task is already running! Type 'lobbyfindstop' to stop the task!");
-          return;
-        }
-
-        findingTargetLobby = true;
-        console.log("Attempting to find " +  targetign + "'s lobby now!");
-        findTargetIgnLobby();
-      }
-    });
-
-    rl.on('line', (input) => {
-      if (input === 'lobbyfindstop') {
-        findingTargetLobby = true;
-      }
-    });
-
-
-    function findTargetIgnLobby() {
-     if(checkIfTargetIgnInLobby) {
-      console.log(bot.username + " is in " + targetign + "'s lobby!");
-     } else {
-      bot.chat("/play pit");
-      setInterval(() => {
-        findTargetIgnLobby();
-      }, 5000);
-     }
-    }
-
-    function checkIfTargetIgnInLobby() {
-      if(targetign in bot.players) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-
+    
     let ticks = 0;
-    bot.on('physicTick', () => {
-          ticks++;
-          if (ticks >= 40) {
-            if (lobbyfinder) {
-            lobbycount = Object.keys(bot.players).length
-            if (bot.username === lobbyFinderIgn) {
-              if (lobbycount <= DeadLobbyPlayerCount) {
-                console.log('[HuysBotta] Dead lobby found with ' + lobbycount + ' players')
-                bot.chat("/p transfer ${targetign}")
-                lobbyfound = true
-                lobbyfinder = false;
-              } else {
-                bot.chat("/play pit")
-                console.log('[HuysBotta] /play pit (' + lobbycount + ' players)')
+        bot.on('physicTick', () => {
+              ticks++;
+              if (ticks >= 40) {
+                if (lobbyfinder) {
+                lobbycount = Object.keys(bot.players).length
+                if (bot.username === lobbyFinderIgn) {
+                  if (lobbycount <= DeadLobbyPlayerCount) {
+                    console.log('[HuysBotta] Dead lobby found with ' + lobbycount + ' players')
+                    bot.chat(`/p transfer ${targetign}`)
+                    lobbyfound = true
+                    lobbyfinder = false;
+                  } else {
+                    bot.chat("/play pit")
+                    console.log('[HuysBotta] /play pit (' + lobbycount + ' players)')
+                  }
+                }
               }
-            }
-          }
-            ticks = 0;
-          }
-        });
-
-   bot.on('messagestr', async (message) => {
-      if (anticallout) {
-        if (message.includes(`bot`)) {
-          console.log("Someone Has Called You Out For Botting So You Were Sent To Limbo");
-          for (let i = 0; i < 100; i++) {
-            await sleep(2)
-            bot.chat("/");
-          }
-        }
-      }
-    });
+                ticks = 0;
+              }
+            });
 
     rl.on('line', (input) => {
       if (input === 'lobby') {
         if (!messageLogged) {
           messageLogged = true;
-          console.log("[HuysBotta] Making bots go to the lobby")
+          console.log("[HuysBotta] Making bots go to lobby")
         }
-        bot.chat("/lobby");
-        enabled = false;
+        bot.chat("/l");
       }
     });
-    
+
     rl.on('line', (input) => {
       if (input === 'play') {
         if (!messageLogged) {
@@ -207,6 +191,14 @@ for (const account of accounts) {
         }
         bot.chat("/play pit");
       }
+    });
+
+
+    rl.on('line', (input) => {
+      if (input === 'report') {
+        console.log(bot.username + " Reported " + reportign)
+        bot.chat("/wdr ${reportign} killaura");
+       }
     });
 
     rl.on('line', (input) => {
@@ -230,42 +222,18 @@ for (const account of accounts) {
         }
       }
     });
-
+    
 
     rl.on('line', (input) => {
       if (input === 'limbo') {
         if (!messageLogged) {
           messageLogged = true;
-          bot.chat("/l");
           console.log("[HuysBotta] Limboing...");
         }
-        for (let i = 0; i < 50; i++) {
-          setTimeout(() => {
-            bot.chat("/");
-          }, 100);
-        }
+        for (let i = 0; i < 100; i++) {
+          sleep(100)
+          bot.chat("/");
       }
-    });
-
-    rl.on('line', input => {
-      const [command, ...args] = input.split(' ');
-      if (command === 'report') {
-        PitBoostONTOP_L_nick_LMFAO = args.join('');
-        const wordsList = ["bhop","killaura","reach","autoblock","speed"];
-        const randreport = wordsList[Math.floor(Math.random() * wordsList.length)];
-        bot.chat("/wdr ${PitBoostONTOP_L_nick_LMFAO} ${randreport}");
-        console.log(bot.username + " Reported " + PitBoostONTOP_L_nick_LMFAO + " For " + randreport)
-      }
-    });
-    
-    rl.on('line', input => {
-      if (command === 'kosreport') {
-        let names = ["Niquit", "AmoebaFan", "BillySet", "Manesh", "Zoreveth", "Axsolo", "ttfan", "Naturalss", "Artificialsss", "pitballer3000", "Axduo", "Quent_007", "GEORGEWEAH", "SmurfPve"];
-        let randomName = names[Math.floor(Math.random() * names.length)];
-        const wordsList = ["bhop","killaura","reach","autoblock","speed"];
-        const randreport = wordsList[Math.floor(Math.random() * wordsList.length)];
-        bot.chat("/wdr ${randomName} ${randreport}");
-        console.log(bot.username + " Reported " + randomName + " For " + randreport)
       }
     });
 
@@ -307,15 +275,38 @@ for (const account of accounts) {
           bot.chat(`/p accept ${targetign}`)
         }
     });
-    
-    //bot go to mid
+
+    bot.on('messagestr', async (message) => {
+        if (message.includes(`bot`)) {
+          console.log("Someone Has Called You Out For Botting So You Were Sent To Limbo");
+          for (let i = 0; i < 100; i++) {
+            sleep(2)
+            bot.chat("/");
+          }
+        }
+    });
+
+    rl.on('line', (input) => {  
+      if (input === 'warp') {    
+        if (bot.username === warpName) {
+            console.log("[HuysBotta] Warping...")        
+            bot.chat("/play pit")      
+            setTimeout(() => {}, 1000);          
+            bot.chat(`/p transfer ${targetign}`)    
+        }  
+      }
+    });
+
+    //bot pathing to coordinates
     bot.on('physicTick', () => {
       if(enabled)  {
         boty = (bot.entity.position.y)
+        bot.lookAt(new Vec3(0, boty, 0))
         if (bot.getControlState('forward') == false) bot.setControlState('forward', true);
         if (bot.getControlState('sprint') == false) bot.setControlState('sprint', true);
-        //hard bots
-        bot.lookAt(new Vec3(0, boty, 0))
+      } else {
+        if (bot.getControlState('forward') == true) bot.setControlState('forward', false);
+        if (bot.getControlState('sprint') == true) bot.setControlState('sprint', false);
       }
     });
 
