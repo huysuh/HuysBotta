@@ -8,13 +8,18 @@ var ticks = 0;
 var inMid = false;
 var inSpawn = true;
 let enabled = false;
+let silent = false;
 var antiafk = 0;
 var lobbycount = 10;
 var lobbyfinder = false;
 var lobbyfound = false;
 var deadLobbyCheck = false;
+var anticallout = true; // enable or disable anti callout (when someone says "bot" it disables the leaves the lobby)
+var fastkills = true; //Makes bots /oof on damage tick (dont use while silent botting) #freemoneyhub>huys
 
-var targetign = "Name of player who parties the bots (Your IGN)";
+
+
+var targetign = "The_wok17";
 var reportign = ""
 var lobbyFinderIgn = "Name of bot that you /p transfer to to swap to find a dead lobby"
 var warpName = "Name of bot that you /p transfer to to warp the bots into the lobby (good for lobby filling useless otherwise)";
@@ -31,9 +36,9 @@ console.log(" |_|  |_|\\__,_|\\__, |___/____/ \\___/ \\__|")
 console.log("                __/ |                    ")
 console.log("")
 console.log("")
-console.log("Huys Pit Bot Discord.gg/Huys")
-console.log("")
-console.log("")
+console.log("Huys Pit Bots v1.0.8")
+console.log("Updates The SILENTS CURRETNLY WATCHDOG DO NOT USE THEM UNTILL FREEMONEYHUB FIXES THEM TOMMAROW")
+console.log("To Start The Bots You Now Use (hardstart) and (hardstop)")
 console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 
 const accounts = [
@@ -63,9 +68,9 @@ rl.on('line', (input) => {
     messageLogged = false;
   } else if (input === 'play') {
     messageLogged = false;
-  } else if (input === 'start') {
+  } else if (input === 'hardstart') {
     messageLogged = false;
-  } else if (input === 'stop') {
+  } else if (input === 'hardstop') {
     messageLogged = false;
   } else if (input === 'report') {
     messageLogged = false;
@@ -74,6 +79,16 @@ rl.on('line', (input) => {
   } else if (input === 'run') {
     messageLogged = false;
   } else if (input === 'logjoins') {
+    messageLogged = false;
+  } else if (input === 'findstop') {
+    messageLogged = false;
+  } else if (input === 'findstart') {
+    messageLogged = false;
+  } else if (input === 'silentstart') {
+    messageLogged = false;
+  } else if (input === 'silentstop') {
+    messageLogged = false;
+  } else if (input === 'warp') {
     messageLogged = false;
   }
 });
@@ -100,8 +115,10 @@ const bots = [];
     });
 
     bot.on('entityHurt', (entity) => {
-     if (bot.entity.uuid === entity.uuid) {
-      bot.chat('/oof');
+       if (fastkills) {
+         if (bot.entity.uuid === entity.uuid) {
+           bot.chat('/oof');
+         }   
        }
     });
 
@@ -197,7 +214,7 @@ const bots = [];
     rl.on('line', (input) => {
       if (input === 'report') {
         console.log(bot.username + " Reported " + reportign)
-        bot.chat("/wdr ${reportign} killaura");
+        bot.chat("/wdr ${reportign} cheating");
        }
     });
 
@@ -238,25 +255,47 @@ const bots = [];
     });
 
     rl.on('line', (input) => {
-      if (input === 'start') {
+      if (input === 'hardstart') {
         if (!messageLogged) {
           messageLogged = true;
-          console.log("[HuysBotta] Script started!");
+          console.log("[HuysBotta]Hard Bot Script started!");
         }
         enabled = true
       }
     });
 
     rl.on('line', (input) => {
-      if (input === 'stop') {
+      if (input === 'hardstop') {
         if (!messageLogged) {
           messageLogged = true;
-          console.log("[HuysBotta] Script stopped!");
+          console.log("[HuysBotta]Hard Bot Script stopped!");
         }
         enabled = false
         bot.chat(`/oof`)
       }
     });
+
+    rl.on('line', (input) => {
+      if (input === 'silentstart') {
+        if (!messageLogged) {
+          messageLogged = true;
+          console.log("[HuysBotta]Silent Bot Script started!");
+        }
+        silent = true
+      }
+    });
+
+    rl.on('line', (input) => {
+      if (input === 'silentstop') {
+        if (!messageLogged) {
+          messageLogged = true;
+          console.log("[HuysBotta]Silent Bot Script stopped!");
+        }
+        silent = false
+        bot.chat(`/oof`)
+      }
+    });  
+   
 
     rl.on('line', input => {
       const [command, ...args] = input.split(' ');
@@ -276,14 +315,16 @@ const bots = [];
         }
     });
 
-    bot.on('messagestr', async (message) => {
+   bot.on('messagestr', async (message) => {
+      if (anticallout) {
         if (message.includes(`bot`)) {
           console.log("Someone Has Called You Out For Botting So You Were Sent To Limbo");
           for (let i = 0; i < 100; i++) {
-            sleep(2)
+            await sleep(2)
             bot.chat("/");
           }
         }
+      }
     });
 
     rl.on('line', (input) => {  
@@ -311,6 +352,21 @@ const bots = [];
     });
 
 
+    let randomX, randomZ;
+
+    setInterval(() => {
+      if (silent) {
+        const boty = bot.entity.position.y;
+        const randomX = Math.floor(Math.random() * 5) + 1;
+        const randomZ = Math.floor(Math.random() * 5) + 1;
+        bot.lookAt(new Vec3(randomX, boty, randomZ));
+        if (bot.getControlState('forward') == false) bot.setControlState('forward', true);
+        if (bot.getControlState('sprint') == false) bot.setControlState('sprint', true);
+      } else {
+        if (bot.getControlState('forward') == true) bot.setControlState('forward', false);
+        if (bot.getControlState('sprint') == true) bot.setControlState('sprint', false);
+      }
+    }, 400);
     // Log errors and kick reasons:
     bot.on('kicked', console.log)
     bot.on('error', console.log)
