@@ -23,8 +23,9 @@ promote the bot that you set as "lobbyFinderIgn" at the top of the script. once 
 
 ### changelog:
 ```diff
-+cleaned up code ty jd
--removed unused silent bot code
++ Added Silent Bots
++ Added Pitblob Mode
+- Alot Of Unused BS
 ```
   
 ### todo:
