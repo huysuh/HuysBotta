@@ -8,22 +8,21 @@ var ticks = 0;
 var inMid = false;
 var inSpawn = true;
 let enabled = false;
-let silent = false;
 var antiafk = 0;
 var lobbycount = 10;
 var lobbyfinder = false;
 var lobbyfound = false;
 var deadLobbyCheck = false;
-var anticallout = true; // enable or disable anti callout (when someone says "bot" it disables the leaves the lobby)
-var fastkills = true; //Makes bots /oof on damage tick (dont use while silent botting) #freemoneyhub>huys
+var boty;
 
-
-
-var targetign = "The_wok17";
+var targetign = "Your Name";
 var reportign = ""
-var lobbyFinderIgn = "Name of bot that you /p transfer to to swap to find a dead lobby"
-var warpName = "Name of bot that you /p transfer to to warp the bots into the lobby (good for lobby filling useless otherwise)";
+var lobbyFinderIgn = ""
+var warpName = "";
 var DeadLobbyPlayerCount = 5; //(default 8)
+
+var blobmode = false;
+var silents = true;
 
 console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 console.log("")
@@ -36,18 +35,17 @@ console.log(" |_|  |_|\\__,_|\\__, |___/____/ \\___/ \\__|")
 console.log("                __/ |                    ")
 console.log("")
 console.log("")
-console.log("Huys Pit Bots v1.0.8 BETA")
-console.log("Updates The SILENTS CURRETNLY WATCHDOG DO NOT USE THEM UNTILL FREEMONEYHUB FIXES THEM TOMMAROW")
-console.log("To Start The Bots You Now Use (hardstart) and (hardstop)")
+console.log("")
+console.log("")
+console.log("")
 console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 
 const accounts = [
-  //example --> socks5://igjkgtkew:gjekfwmq@157.42.192.116:6680
-  {username: 'AccountEmail', password: 'AccountPassword', proxy: 'socks5://ProxyUsername:ProxyPassword@ProxyHost:ProxyPort'}, 
-  {username: 'AccountEmail', password: 'AccountPassword', proxy: 'socks5://ProxyUsername:ProxyPassword@ProxyHost:ProxyPort'}, 
-  {username: 'AccountEmail', password: 'AccountPassword', proxy: 'socks5://ProxyUsername:ProxyPassword@ProxyHost:ProxyPort'}, 
+  //get rotating socks5 proxys from webshare
+  {username: 'email', password: 'pass', proxy: 'socks5://user:pass@p.webshare.io:80'}, 
+  {username: 'email', password: 'pass', proxy: 'socks5://user:pass@p.webshare.io:80'}, 
+  {username: 'email', password: 'pass', proxy: 'socks5://user:pass@p.webshare.io:80'}, 
 ];
-
 
 const sleep = (milliseconds) => {
   return new Promise(resolve => setTimeout(resolve, milliseconds))
@@ -68,9 +66,9 @@ rl.on('line', (input) => {
     messageLogged = false;
   } else if (input === 'play') {
     messageLogged = false;
-  } else if (input === 'hardstart') {
+  } else if (input === 'start') {
     messageLogged = false;
-  } else if (input === 'hardstop') {
+  } else if (input === 'stop') {
     messageLogged = false;
   } else if (input === 'report') {
     messageLogged = false;
@@ -79,16 +77,6 @@ rl.on('line', (input) => {
   } else if (input === 'run') {
     messageLogged = false;
   } else if (input === 'logjoins') {
-    messageLogged = false;
-  } else if (input === 'findstop') {
-    messageLogged = false;
-  } else if (input === 'findstart') {
-    messageLogged = false;
-  } else if (input === 'silentstart') {
-    messageLogged = false;
-  } else if (input === 'silentstop') {
-    messageLogged = false;
-  } else if (input === 'warp') {
     messageLogged = false;
   }
 });
@@ -99,7 +87,7 @@ const bots = [];
       sleep(randomDelay)
       setTimeout(() => {
         const bot = mineflayer.createBot({
-          host: 'hypixel.net',
+          host: 'nigger.hypixel.net',
           port: 25565,
           version: "1.8.9",
           username: account.username,
@@ -115,13 +103,11 @@ const bots = [];
     });
 
     bot.on('entityHurt', (entity) => {
-       if (fastkills) {
-         if (bot.entity.uuid === entity.uuid) {
-           bot.chat('/oof');
-         }   
-       }
+      if (bot.entity.uuid === entity.uuid) {
+        bot.chat('/oof');
+      }
     });
-
+        
     rl.on('line', (input) => {
       if (input === 'logjoins') {
         console.log(bot.username + ' Has Started Logging Joins');
@@ -145,7 +131,7 @@ const bots = [];
         lobbyfinder = false;
       }
     });
-    
+
     rl.on('line', (input) => {
       if (input === 'findstart') {
         if (bot.username === lobbyFinderIgn) {
@@ -255,47 +241,25 @@ const bots = [];
     });
 
     rl.on('line', (input) => {
-      if (input === 'hardstart') {
+      if (input === 'start') {
         if (!messageLogged) {
           messageLogged = true;
-          console.log("[HuysBotta]Hard Bot Script started!");
+          console.log("[HuysBotta] Script started!");
         }
         enabled = true
       }
     });
 
     rl.on('line', (input) => {
-      if (input === 'hardstop') {
+      if (input === 'stop') {
         if (!messageLogged) {
           messageLogged = true;
-          console.log("[HuysBotta]Hard Bot Script stopped!");
+          console.log("[HuysBotta] Script stopped!");
         }
         enabled = false
         bot.chat(`/oof`)
       }
     });
-
-    rl.on('line', (input) => {
-      if (input === 'silentstart') {
-        if (!messageLogged) {
-          messageLogged = true;
-          console.log("[HuysBotta]Silent Bot Script started!");
-        }
-        silent = true
-      }
-    });
-
-    rl.on('line', (input) => {
-      if (input === 'silentstop') {
-        if (!messageLogged) {
-          messageLogged = true;
-          console.log("[HuysBotta]Silent Bot Script stopped!");
-        }
-        silent = false
-        bot.chat(`/oof`)
-      }
-    });  
-   
 
     rl.on('line', input => {
       const [command, ...args] = input.split(' ');
@@ -315,18 +279,6 @@ const bots = [];
         }
     });
 
-   bot.on('messagestr', async (message) => {
-      if (anticallout) {
-        if (message.includes(`bot`)) {
-          console.log("Someone Has Called You Out For Botting So You Were Sent To Limbo");
-          for (let i = 0; i < 100; i++) {
-            await sleep(2)
-            bot.chat("/");
-          }
-        }
-      }
-    });
-
     rl.on('line', (input) => {  
       if (input === 'warp') {    
         if (bot.username === warpName) {
@@ -337,36 +289,84 @@ const bots = [];
         }  
       }
     });
-
-    //bot pathing to coordinates
-    bot.on('physicTick', () => {
-      if(enabled)  {
-        boty = (bot.entity.position.y)
-        bot.lookAt(new Vec3(0, boty, 0))
+  
+      bot.on('physicTick', () => {
+      const ppx = Math.floor(Math.random() * 4);
+      const ppz = Math.floor(Math.random() * 4);
+      const ppzz = Math.floor(Math.random() * 4);
+      if (!silents) {
+        if (bot.getControlState('left') == true) bot.setControlState('left', false);
+        if (bot.getControlState('right') == true) bot.setControlState('right', false);
+        if (bot.getControlState('jump') == false) bot.setControlState('jump', true);
+      }
+      if (enabled)  {
         if (bot.getControlState('forward') == false) bot.setControlState('forward', true);
         if (bot.getControlState('sprint') == false) bot.setControlState('sprint', true);
+        if (bot.getControlState('jump') == false) bot.setControlState('jump', true);
+        boty = (bot.entity.position.y)
+        if (blobmode) {
+          if (bot.entity.position.y > spawnY) {
+            if (bot.getControlState('jump') == false) bot.setControlState('jump', true);
+            bot.lookAt(new Vec3(0, boty, 0))
+          } else {
+            if (bot.getControlState('jump') == true) bot.setControlState('jump', false);
+            bot.lookAt(new Vec3(0, boty, -13))
+          }
+        } else {
+          if (silents) {
+            strafes++;
+            if (boty < spawnY) {
+              bot.lookAt(bot.nearestEntity(e => e.type === 'player').position.offset(0, 1.6, 0));
+              if (bot.getControlState('jump') == false) bot.setControlState('jump', true);
+              if (strafes < 10) { 
+                if (bot.getControlState('left') == false) bot.setControlState('left', true);
+                if (bot.getControlState('right') == true) bot.setControlState('right', false);
+              } else {
+                if (bot.getControlState('left') == true) bot.setControlState('left', false);
+                if (bot.getControlState('right') == false) bot.setControlState('right', true);
+                if (strafes > 20) {
+                  strafes = 0;
+                }
+              }
+              const player = bot.nearestEntity(entity => entity.type === 'player');
+              bot.attack(player);
+            } else {
+              bot.lookAt(new Vec3(ppx, boty, ppz))
+              if (bot.getControlState('jump') == true) bot.setControlState('jump', false);
+            }
+          } else {
+            if (bot.getControlState('jump') == true) bot.setControlState('jump', false);
+            bot.lookAt(new Vec3(ppx, boty, ppzz))
+          }
+        }
       } else {
+        if (bot.getControlState('left') == true) bot.setControlState('left', false);
+        if (bot.getControlState('right') == true) bot.setControlState('right', false);
+        if (bot.getControlState('jump') == true) bot.setControlState('jump', false);
         if (bot.getControlState('forward') == true) bot.setControlState('forward', false);
         if (bot.getControlState('sprint') == true) bot.setControlState('sprint', false);
       }
     });
 
-
-    let randomX, randomZ;
-
-    setInterval(() => {
-      if (silent) {
-        const boty = bot.entity.position.y;
-        const randomX = Math.floor(Math.random() * 5) + 1;
-        const randomZ = Math.floor(Math.random() * 5) + 1;
-        bot.lookAt(new Vec3(randomX, boty, randomZ));
-        if (bot.getControlState('forward') == false) bot.setControlState('forward', true);
-        if (bot.getControlState('sprint') == false) bot.setControlState('sprint', true);
-      } else {
-        if (bot.getControlState('forward') == true) bot.setControlState('forward', false);
-        if (bot.getControlState('sprint') == true) bot.setControlState('sprint', false);
+    bot.on('messagestr', async (message) => {
+      if (message.includes(`Party`)) {
+        if (message.includes(`play`)) {
+          bot.chat("/play pit");
+        } else if (message.includes(`lobby`)) {
+          bot.chat("/l");
+        } else if (message.includes(`start`)) {
+          enabled = true
+        } else if (message.includes(`stop`)) {
+          enabled = false
+          bot.chat("/oof");
+        } else if (message.includes(`limbo`)) {
+          for (let i = 0; i < 1000; i++) {
+            bot.chat("/");
+          }
+        } 
       }
-    }, 400);
+    });
+
     // Log errors and kick reasons:
     bot.on('kicked', console.log)
     bot.on('error', console.log)
