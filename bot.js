@@ -87,7 +87,7 @@ const bots = [];
       sleep(randomDelay)
       setTimeout(() => {
         const bot = mineflayer.createBot({
-          host: 'nigger.hypixel.net',
+          host: 'mc.hypixel.net',
           port: 25565,
           version: "1.8.9",
           username: account.username,
