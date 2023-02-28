@@ -336,7 +336,7 @@ const bots = [];
             }
           } else {
             if (bot.getControlState('jump') == true) bot.setControlState('jump', false);
-            bot.lookAt(new Vec3(ppx, boty, ppzz))
+            bot.lookAt(new Vec3(0, boty, 0))
           }
         }
       } else {
