@@ -41,10 +41,10 @@ console.log("")
 console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 
 const accounts = [
-  //get rotating socks5 proxys from webshare
-  {username: 'email', password: 'pass', proxy: 'socks5://user:pass@p.webshare.io:80'}, 
-  {username: 'email', password: 'pass', proxy: 'socks5://user:pass@p.webshare.io:80'}, 
-  {username: 'email', password: 'pass', proxy: 'socks5://user:pass@p.webshare.io:80'}, 
+  //example --> socks5://igjkgtkew:gjekfwmq@157.42.192.116:6680
+  {username: 'AccountEmail', password: 'AccountPassword', proxy: 'socks5://ProxyUsername:ProxyPassword@ProxyHost:ProxyPort'}, 
+  {username: 'AccountEmail', password: 'AccountPassword', proxy: 'socks5://ProxyUsername:ProxyPassword@ProxyHost:ProxyPort'}, 
+  {username: 'AccountEmail', password: 'AccountPassword', proxy: 'socks5://ProxyUsername:ProxyPassword@ProxyHost:ProxyPort'}, 
 ];
 
 const sleep = (milliseconds) => {
