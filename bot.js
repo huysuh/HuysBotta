@@ -14,6 +14,7 @@ var lobbyfinder = false;
 var lobbyfound = false;
 var deadLobbyCheck = false;
 var boty;
+var strafes = 0;
 
 var targetign = "Your Name";
 var reportign = ""
