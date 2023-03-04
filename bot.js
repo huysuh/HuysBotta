@@ -14,6 +14,7 @@ var lobbyfinder = false;
 var lobbyfound = false;
 var deadLobbyCheck = false;
 var boty;
+var spawnY = 0;
 var strafes = 0;
 
 var targetign = "Your Name";
@@ -36,7 +37,7 @@ console.log(" |_|  |_|\\__,_|\\__, |___/____/ \\___/ \\__|")
 console.log("                __/ |                    ")
 console.log("")
 console.log("")
-console.log("")
+console.log("              free xxmichaelz")
 console.log("")
 console.log("")
 console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
