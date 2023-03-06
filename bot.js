@@ -296,11 +296,6 @@ const bots = [];
       const ppx = Math.floor(Math.random() * 4);
       const ppz = Math.floor(Math.random() * 4);
       const ppzz = Math.floor(Math.random() * 4);
-      if (!silents) {
-        if (bot.getControlState('left') == true) bot.setControlState('left', false);
-        if (bot.getControlState('right') == true) bot.setControlState('right', false);
-        if (bot.getControlState('jump') == false) bot.setControlState('jump', true);
-      }
       if (enabled)  {
         if (bot.getControlState('forward') == false) bot.setControlState('forward', true);
         if (bot.getControlState('sprint') == false) bot.setControlState('sprint', true);
