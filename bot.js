@@ -299,7 +299,6 @@ const bots = [];
       if (enabled)  {
         if (bot.getControlState('forward') == false) bot.setControlState('forward', true);
         if (bot.getControlState('sprint') == false) bot.setControlState('sprint', true);
-        if (bot.getControlState('jump') == false) bot.setControlState('jump', true);
         boty = (bot.entity.position.y)
         if (blobmode) {
           if (bot.entity.position.y > spawnY) {
